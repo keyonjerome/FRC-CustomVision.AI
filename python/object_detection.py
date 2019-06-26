@@ -114,6 +114,7 @@ class ObjectDetection(object):
         return (boxes, class_probs)
     
     def predict_image(self, image):
+        print("called")
         inputs = self.preprocess(image)
         prediction_outputs = self.predict(inputs)
         return self.postprocess(prediction_outputs)
@@ -144,6 +145,8 @@ class ObjectDetection(object):
         Returns:
             List of Prediction objects.
         """
+        #print(prediction_outputs)
+
         boxes, class_probs = self._extract_bb(prediction_outputs, self.ANCHORS)
 
         # Remove bounding boxes whose confidence is lower than the threshold.
@@ -153,7 +156,7 @@ class ObjectDetection(object):
 
         # Remove overlapping bounding boxes
         selected_boxes, selected_classes, selected_probs = self._non_maximum_suppression(boxes[index], class_probs[index], self.max_detections)
-
+        
         return [{'probability': round(float(selected_probs[i]), 8),
                  'tagId': int(selected_classes[i]),
                  'tagName': self.labels[selected_classes[i]],

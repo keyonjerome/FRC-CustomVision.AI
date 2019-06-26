@@ -3,6 +3,7 @@ import onnxruntime
 import numpy as np
 from PIL import Image, ImageDraw
 from object_detection import ObjectDetection
+import cv2
 
 MODEL_FILENAME = 'model.onnx'
 LABELS_FILENAME = 'labels.txt'
