@@ -8,9 +8,17 @@ import cv2
 
 MODEL_FILENAME = 'model.onnx'
 LABELS_FILENAME = 'labels.txt'
+focal_length = 327.745
+font = cv2.FONT_HERSHEY_SIMPLEX
+
+def getDistanceToCamera(knownHeight, knownFocal, heightPixels):
+    distance = -1
+    if heightPixels > 0:
+        distance = (knownHeight*knownFocal)/heightPixels
+    return distance
 
 def main():
-    probability_threshold = 80
+    probability_threshold = 0
     cap = cv2.VideoCapture(0)
     model = cntk.Function.load(MODEL_FILENAME, format=cntk.ModelFormat.ONNX)
     _, first_frame = cap.read()
@@ -22,7 +30,7 @@ def main():
     od_model = CNTKObjectDetection(model, labels)
     while True:
         ret, frame = cap.read()
-
+        #frame = cv2.imread("testimage.jpg")
         pil_frame = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
         predictions = od_model.predict_image(pil_frame)
@@ -41,6 +49,10 @@ def main():
                 h = int(bBox['height']*frame_shape[1])
 
                 cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
+                distToCamera = getDistanceToCamera(20,focal_length,h)
+                distString = "Distance: " + str(distToCamera)
+                cv2.putText(frame,distString,(frame_shape[0],frame_shape[1]), font, 1,(255,255,255),2,cv2.LINE_AA)
+
         cv2.imshow('Image Processing',frame)
          # given an "x" input, end the program.
         givenKey = cv2.waitKey(1)

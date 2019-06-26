@@ -114,7 +114,6 @@ class ObjectDetection(object):
         return (boxes, class_probs)
     
     def predict_image(self, image):
-        print("called")
         inputs = self.preprocess(image)
         prediction_outputs = self.predict(inputs)
         return self.postprocess(prediction_outputs)
