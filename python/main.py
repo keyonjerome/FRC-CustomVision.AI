@@ -51,7 +51,7 @@ def main():
                 cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
                 distToCamera = getDistanceToCamera(20,focal_length,h)
                 distString = "Distance: " + str(distToCamera)
-                cv2.putText(frame,distString,(frame_shape[0],frame_shape[1]), font, 1,(255,255,255),2,cv2.LINE_AA)
+                cv2.putText(frame,distString,(frame_shape[0]-200,frame_shape[1]-200), font, 0.75,(255,255,255),2,cv2.LINE_AA)
 
         cv2.imshow('Image Processing',frame)
          # given an "x" input, end the program.
