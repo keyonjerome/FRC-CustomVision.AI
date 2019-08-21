@@ -6,11 +6,13 @@
 import sys
 import tensorflow as tf
 import numpy as np
+import cv2
 from PIL import Image
 from object_detection import ObjectDetection
 
-MODEL_FILENAME = 'model.pb'
-LABELS_FILENAME = 'labels.txt'
+MODEL_FILENAME = '../model.pb'
+LABELS_FILENAME = '../labels.txt'
+od_model = 0
 
 class TFObjectDetection(ObjectDetection):
     """Object Detection class for TensorFlow
@@ -30,7 +32,24 @@ class TFObjectDetection(ObjectDetection):
             return outputs[0]
 
 
-def main(image_filename):
+# def main(image_filename):
+#     # Load a TensorFlow model
+#     graph_def = tf.GraphDef()
+#     with tf.gfile.FastGFile(MODEL_FILENAME, 'rb') as f:
+#         graph_def.ParseFromString(f.read())
+
+#     # Load labels
+#     with open(LABELS_FILENAME, 'r') as f:
+#         labels = [l.strip() for l in f.readlines()]
+
+#     od_model = TFObjectDetection(graph_def, labels)
+
+#     image = Image.open(image_filename)
+#     predictions = od_model.predict_image(image)
+#     print(predictions)
+
+def load():
+    global od_model
     # Load a TensorFlow model
     graph_def = tf.GraphDef()
     with tf.gfile.FastGFile(MODEL_FILENAME, 'rb') as f:
@@ -42,10 +61,11 @@ def main(image_filename):
 
     od_model = TFObjectDetection(graph_def, labels)
 
-    image = Image.open(image_filename)
-    predictions = od_model.predict_image(image)
-    print(predictions)
-    
+def predict(frame):
+    pil_frame = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+    predictions = od_model.predict_image(pil_frame)
+    return predictions
+
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
         print('USAGE: {} image_filename'.format(sys.argv[0]))

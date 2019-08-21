@@ -1,0 +1,13 @@
+Help on package tflite_runtime:
+
+NNAAMMEE
+    tflite_runtime
+
+PPAACCKKAAGGEE  CCOONNTTEENNTTSS
+    _interpreter_wrapper
+    interpreter
+    interpreter_wrapper
+
+FFIILLEE
+    /home/keyon/.local/lib/python3.6/site-packages/tflite_runtime/__init__.py
+
