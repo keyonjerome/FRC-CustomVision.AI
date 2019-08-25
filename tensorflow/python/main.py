@@ -2,65 +2,48 @@ import sys
 import numpy as np
 from PIL import Image, ImageDraw
 from object_detection import ObjectDetection
+import visioncalculation
 import cv2
 import prediction_handling
+import networking
 
-MODEL_FILENAME = '../model.pb'
-LABELS_FILENAME = '../labels.txt'
-
-focal_length = 327.745
+#focal_length = 327.745
+focal_length = 708.897
 font = cv2.FONT_HERSHEY_SIMPLEX
-
-def getDistanceToCamera(knownHeight, knownFocal, heightPixels):
-    distance = -1
-    if heightPixels > 0:
-        distance = (knownHeight*knownFocal)/heightPixels
-    return distance
-
-def resize_down_to_1600_max_dim(image):
-    h, w = image.shape[:2]
-    if (h < 1600 and w < 1600):
-        return image
-
-    new_size = (1600 * w // h, 1600) if (h > w) else (1600, 1600 * h // w)
-    return cv2.resize(image, new_size, interpolation = cv2.INTER_LINEAR)
+probability_threshold = 0.75
 
 def main():
-    probability_threshold = 0.5
-    
+    # open a video capture
     cap = cv2.VideoCapture(2)
-    
+    # read the first frame from the camera
     _ , first_frame = cap.read()
-    
+    # get shape (resolution) of camera from first frame
     frame_shape = first_frame.shape
 
+    # load the tensorflow model, setup
     prediction_handling.load()
+
+    networking.initialize()
+    #networking.wait_for_connection()
+
     while True:
+        # read frame from camera
         ret, frame = cap.read()
-        frame = resize_down_to_1600_max_dim(frame)
+        # resize frame
+        frame = visioncalculation.resize_down_to_1600_max_dim(frame)
+        # feed frame into model
         predictions = prediction_handling.predict(frame)
-        print(predictions)
-        bestIndex = 0
-        for x in range(len(predictions)):
-            if predictions[x]['probability'] > predictions[bestIndex]['probability']:
-                bestIndex = x
-        if len(predictions) > 0:
-            if predictions[bestIndex]['probability'] > probability_threshold:
-                bBox = predictions[bestIndex]['boundingBox']
-                print(bestIndex)
-                left = int(bBox['left']*frame_shape[1])
-                top = int(bBox['top']*frame_shape[0])
-                width = int(bBox['width']*frame_shape[1])
-                height = int(bBox['height']*frame_shape[0])
-                print(left,top,width, height)
-                print(frame_shape)
-                cv2.rectangle(frame,(left,top),(left+width,top+height),(0,255,0),2)
+        
+        # find best 
+        bestIndex = visioncalculation.find_best_probability_index(predictions)
+        
+        # find top left & bottom right corner of object, object width and height
+        top_left, bottom_right,width, height = visioncalculation.find_object_corners(predictions,bestIndex,probability_threshold,frame_shape)
+        # calculate distance from object to camera
+        distance_to_camera = visioncalculation.getDistanceToCamera(11,focal_length,height)
+        # draw object outline and distance data to screen, show it
+        show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
 
-                distToCamera = getDistanceToCamera(20,focal_length,height)
-                distString = "Distance: " + str(distToCamera)
-                cv2.putText(frame,distString,(frame_shape[0]-200,frame_shape[1]-200), font, 0.75,(255,255,255),2,cv2.LINE_AA)
-
-        cv2.imshow('Image Processing',frame)
          # given an "x" input, end the program.
         givenKey = cv2.waitKey(500)
         # program end clause
@@ -69,6 +52,16 @@ def main():
             cv2.destroyAllWindows()
             sys.exit()
 
+# Draw object outline and vision data to screen, then show it
+def show_frame(frame,obj_top_left,obj_bottom_right,distance,frame_shape):
+
+    cv2.rectangle(frame,obj_top_left,obj_bottom_right,(0,255,0),2)
+
+    distance_string = "Distance: " + str(distance)
+
+    cv2.putText(frame,distance_string,(frame_shape[0]-200,frame_shape[1]-200), font, 0.75,(255,255,255),2,cv2.LINE_AA)
+
+    cv2.imshow('Image Processing',frame)
 
 if __name__ == '__main__':
     main()
