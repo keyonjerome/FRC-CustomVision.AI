@@ -6,6 +6,7 @@ import math
 # Robot networking code, makes program wait until network connection is confirmed to continue
 cond = threading.Condition()
 notified = [False]
+visionTable = NetworkTables.getTable("SmartDashboard")
 
 # listen for a connection to the robot
 def connectionListener(connected, info):

@@ -43,7 +43,7 @@ def main():
         distance_to_camera = visioncalculation.getDistanceToCamera(11,focal_length,height)
         # draw object outline and distance data to screen, show it
         show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
-
+        
          # given an "x" input, end the program.
         givenKey = cv2.waitKey(500)
         # program end clause
