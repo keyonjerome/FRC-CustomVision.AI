@@ -20,7 +20,9 @@ def connectionListener(connected, info):
 def initialize():
     global visionTable
     # Initialize NetworkTables and add a listener for until the connection has been established
-    NetworkTables.initialize(server='10.52.88.2')
+    #NetworkTables.initialize(server='10.52.88.2')
+    NetworkTables.initialize(server='roborio-5288-frc.local')
+    print("NetworkTables initialized.")
     NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
     visionTable = NetworkTables.getTable("SmartDashboard")
   
@@ -34,11 +36,12 @@ def wait_for_connection():
 
     # At this point, the Raspberry Pi has connected.
     print("Connected!")
-    #visionTable.putNumber("Connected!",0)
+    visionTable.putNumber("Connected!",0)
 
 def putNumber(key,value):
     global visionTable
     visionTable.putNumber(key,value)
+    
 
 # print out every item in an array, instead of using an ellipsis to shorten it.
 #np.set_printoptions(threshold=np.inf)

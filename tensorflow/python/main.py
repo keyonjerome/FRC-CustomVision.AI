@@ -46,9 +46,10 @@ def main():
         # draw object outline and distance data to screen, show it
         show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
         
-        if len(predictions) > 0:
-            off_x = visioncalculation.find_x_term(frame_shape,top_left,width)   networking.putNumber("xToObject")
-            if off_x != 320.0:
+        if len(predictions) > 0 and predictions[bestIndex]['probability'] > probability_threshold:
+            off_x = visioncalculation.find_x_term(frame_shape,top_left,width)
+            if off_x != -320.0:
+                print("off_x", off_x)
                 networking.putNumber("xToObject",off_x)
                 networking.putNumber("distanceToObject",distance_to_camera)
 
