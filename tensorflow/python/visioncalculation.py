@@ -31,6 +31,10 @@ def find_object_corners(predictions,bestIndex,probability_threshold,frame_shape)
 
         return (0,0), (0,0),0,0                  
 
+def find_x_term(frame_shape,top_left,width):
+    return -frame_shape[1]/2 + (top_left[0] + width/2)
+
+
 def getDistanceToCamera(knownHeight, knownFocal, heightPixels):
     
     distance = -1

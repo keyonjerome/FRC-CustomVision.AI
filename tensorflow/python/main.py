@@ -14,17 +14,19 @@ probability_threshold = 0.75
 
 def main():
     # open a video capture
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(0)
     # read the first frame from the camera
     _ , first_frame = cap.read()
     # get shape (resolution) of camera from first frame
     frame_shape = first_frame.shape
-
+    print("")
+    print("")
+    print(frame_shape)
     # load the tensorflow model, setup
     prediction_handling.load()
 
     networking.initialize()
-    #networking.wait_for_connection()
+    networking.wait_for_connection()
 
     while True:
         # read frame from camera
@@ -44,6 +46,12 @@ def main():
         # draw object outline and distance data to screen, show it
         show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
         
+        if len(predictions) > 0:
+            off_x = visioncalculation.find_x_term(frame_shape,top_left,width)   networking.putNumber("xToObject")
+            if off_x != 320.0:
+                networking.putNumber("xToObject",off_x)
+                networking.putNumber("distanceToObject",distance_to_camera)
+
          # given an "x" input, end the program.
         givenKey = cv2.waitKey(500)
         # program end clause
