@@ -36,7 +36,7 @@ def wait_for_connection():
 
     # At this point, the Raspberry Pi has connected.
     print("Connected!")
-    visionTable.putNumber("Connected!",0)
+    visionTable.putNumber("Connected!",10)
 
 def putNumber(key,value):
     global visionTable

@@ -14,7 +14,7 @@ probability_threshold = 0.75
 
 def main():
     # open a video capture
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(2)
     # read the first frame from the camera
     _ , first_frame = cap.read()
     # get shape (resolution) of camera from first frame
@@ -26,7 +26,7 @@ def main():
     prediction_handling.load()
 
     networking.initialize()
-    #networking.wait_for_connection()
+    networking.wait_for_connection()
 
     while True:
         # read frame from camera
@@ -44,14 +44,14 @@ def main():
         # calculate distance from object to camera
         distance_to_camera = visioncalculation.getDistanceToCamera(11,focal_length,height)
         # draw object outline and distance data to screen, show it
-        show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
+        #show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
         
         if len(predictions) > 0 and predictions[bestIndex]['probability'] > probability_threshold:
             off_x = visioncalculation.find_x_term(frame_shape,top_left,width)
             if off_x != -320.0:
                 print("off_x", off_x)
-               # networking.putNumber("xToObject",off_x)
-               # networking.putNumber("distanceToObject",distance_to_camera)
+                networking.putNumber("xToObject",off_x)
+                networking.putNumber("distanceToObject",distance_to_camera)
 
          # given an "x" input, end the program.
         givenKey = cv2.waitKey(500)
