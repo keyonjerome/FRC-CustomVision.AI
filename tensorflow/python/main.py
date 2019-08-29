@@ -14,7 +14,7 @@ probability_threshold = 0.75
 
 def main():
     # open a video capture
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(0)
     # read the first frame from the camera
     _ , first_frame = cap.read()
     # get shape (resolution) of camera from first frame
@@ -33,6 +33,7 @@ def main():
         ret, frame = cap.read()
         # resize frame
         frame = visioncalculation.resize_down_to_1600_max_dim(frame)
+        frame = cv2.resize(frame,None,fx=0.5,fy=0.5)
         # feed frame into model
         predictions = prediction_handling.predict(frame)
         
@@ -42,7 +43,7 @@ def main():
         # find top left & bottom right corner of object, object width and height
         top_left, bottom_right,width, height = visioncalculation.find_object_corners(predictions,bestIndex,probability_threshold,frame_shape)
         # calculate distance from object to camera
-        distance_to_camera = visioncalculation.getDistanceToCamera(11,focal_length,height)
+        distance_to_camera = visioncalculation.getDistanceToCamera(25,focal_length,height)
         # draw object outline and distance data to screen, show it
         #show_frame(frame,top_left,bottom_right,distance_to_camera,frame_shape)
         
@@ -54,12 +55,12 @@ def main():
                 networking.putNumber("distanceToObject",distance_to_camera)
 
          # given an "x" input, end the program.
-        givenKey = cv2.waitKey(500)
-        # program end clause
-        if givenKey == ord('x'):
-            cap.release()
-            cv2.destroyAllWindows()
-            sys.exit()
+        # givenKey = cv2.waitKey(0)
+        # # program end clause
+        # if givenKey == ord('x'):
+        #     cap.release()
+        #     cv2.destroyAllWindows()
+        #     sys.exit()
 
 # Draw object outline and vision data to screen, then show it
 def show_frame(frame,obj_top_left,obj_bottom_right,distance,frame_shape):

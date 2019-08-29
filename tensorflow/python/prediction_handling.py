@@ -10,8 +10,12 @@ import cv2
 from PIL import Image
 from object_detection import ObjectDetection
 
-MODEL_FILENAME = '/home/pi/Documents/CustomVisionAI/FRC-CustomVision.AI/tensorflow/model.pb'
-LABELS_FILENAME = '/home/pi/Documents/CustomVisionAI/FRC-CustomVision.AI/tensorflow/labels.txt'
+# MODEL_FILENAME = '/home/pi/Documents/CustomVisionAI/FRC-CustomVision.AI/tensorflow/model.pb'
+# LABELS_FILENAME = '/home/pi/Documents/CustomVisionAI/FRC-CustomVision.AI/tensorflow/labels.txt'
+MODEL_FILENAME = "../model.pb"
+
+LABELS_FILENAME = "../labels.txt"
+
 od_model = 0
 
 class TFObjectDetection(ObjectDetection):
