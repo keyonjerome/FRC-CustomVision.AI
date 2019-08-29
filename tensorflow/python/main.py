@@ -26,7 +26,7 @@ def main():
     prediction_handling.load()
 
     networking.initialize()
-    networking.wait_for_connection()
+    #networking.wait_for_connection()
 
     while True:
         # read frame from camera
@@ -50,8 +50,8 @@ def main():
             off_x = visioncalculation.find_x_term(frame_shape,top_left,width)
             if off_x != -320.0:
                 print("off_x", off_x)
-                networking.putNumber("xToObject",off_x)
-                networking.putNumber("distanceToObject",distance_to_camera)
+               # networking.putNumber("xToObject",off_x)
+               # networking.putNumber("distanceToObject",distance_to_camera)
 
          # given an "x" input, end the program.
         givenKey = cv2.waitKey(500)
