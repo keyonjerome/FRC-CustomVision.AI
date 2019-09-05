@@ -18,5 +18,5 @@ Currently, the program detects the hatch quite well (see google doc), and vision
 Next, I need to fine-tune the distance math and find angles to the target to port into solvePnP() to detect where the robots are in 3D space, and after that, port this program to a Raspberry Pi.
 
 ### Want to learn more?
-[NEW Google Doc, September 2019, using Tensorflow] (https://docs.google.com/document/d/1xEkql4t2k2on5pWODVsJKmNB83CbAXsfhYoOYy8iIx8/edit?usp=sharing)
+[NEW Google Doc, September 2019, using Tensorflow](https://docs.google.com/document/d/1xEkql4t2k2on5pWODVsJKmNB83CbAXsfhYoOYy8iIx8/edit?usp=sharing)
 [Google Doc (June 2019, using ONNX)](https://docs.google.com/document/d/1wLhM5ahvdox7a_Fom5_leUtu3d5cdZXE6BZQBcUypsc/edit?usp=sharing)
