@@ -21,3 +21,5 @@ We’d love to optimize our machine learning model by ditching CustomVision.AI a
 [NEW Google Doc, September 2019, using Tensorflow](https://docs.google.com/document/d/1xEkql4t2k2on5pWODVsJKmNB83CbAXsfhYoOYy8iIx8/edit?usp=sharing)
 
 [Google Doc (June 2019, using ONNX)](https://docs.google.com/document/d/1wLhM5ahvdox7a_Fom5_leUtu3d5cdZXE6BZQBcUypsc/edit?usp=sharing)
+
+Winning Facebook post: https://www.facebook.com/bosInnovations/videos/1325857704252193/
